@@ -101,7 +101,7 @@ try:
     driver.get('https://reservenski.parkpalisadestahoe-village.com/select-parking')
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, calendar_selector)))
 
-    if current_date.month != 1:
+    if current_date.month != date_on_sunday.month:
         nextMonthButton = driver.find_element(By.XPATH, "//button[@class='mbsc-calendar-button mbsc-calendar-button-next mbsc-reset mbsc-font mbsc-button mbsc-ios mbsc-ltr mbsc-button-flat mbsc-icon-button']")
         nextMonthButton.click()
 
