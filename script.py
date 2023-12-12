@@ -94,9 +94,9 @@ try:
                 break
 
     if(free_parking_on_saturday == True):
-        print("Saturday - " + date_on_saturday + ":Free Parking Reserved ")
+        print("Saturday - ", date_on_saturday, ": Free Parking Reserved ")
     else:
-        print("Saturday - " + date_on_saturday + ": No Free Parking Available")
+        print("Saturday - ", date_on_saturday, ": No Free Parking Available")
 
     driver.get('https://reservenski.parkpalisadestahoe-village.com/select-parking')
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, calendar_selector)))
@@ -141,9 +141,9 @@ try:
                 break
 
     if(free_parking_on_sunday == True):
-        print("Sunday - " + date_on_sunday + ": Free Parking Reserved")
+        print("Sunday   - ", date_on_sunday, ": Free Parking Reserved")
     else:
-        print("Sunday - " + date_on_sunday + ": No Free Parking Available")
+        print("Sunday   - ", date_on_sunday, ": No Free Parking Available")
 
 
 finally:
