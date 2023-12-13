@@ -152,7 +152,7 @@ try:
                 confirm_button_selector = '//button[@class="ui button fluid PurchaseConfirm--button"]'
                 WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, confirm_button_selector)))
                 driver.find_element(By.XPATH, confirm_button_selector).click()
-                time.sleep(5)
+                time.sleep(10)
                 break
 
     if(free_parking_on_sunday == True):
