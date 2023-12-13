@@ -2,10 +2,22 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
 from datetime import datetime, timedelta
 import time
 
+current_time = datetime.now()
+days_until_tuesday = (2 - current_time.weekday() + 7) % 7
+next_tuesday = current_time + timedelta(days=days_until_tuesday)
+target_time = next_tuesday.replace(hour=12, minute=0, second=0, microsecond=0)
+time_difference = target_time - current_time
+wait_time_seconds = time_difference.total_seconds()
+# if wait_time_seconds < 0:
+    # wait_time_seconds += 7 * 86400  # 7 days * 86400 seconds in a day
+    # next_tuesday = next_tuesday + timedelta(seconds=wait_time_seconds)
+if wait_time_seconds > 0:
+    print(f"Waiting until", target_time.strftime('%H:%M %p'), "of Tuesday,", next_tuesday.date())
+    time.sleep(wait_time_seconds)
+    print("Done waiting")
 
 url = 'https://reservenski.parkpalisadestahoe-village.com/'
 webdriver_path = '/Applications/Chromium.app/Contents/MacOS/Chromium'
