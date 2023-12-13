@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 from datetime import datetime, timedelta
 import time
 
@@ -13,6 +14,7 @@ password = 'PalisadesParking'
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--blink-settings=imagesEnabled=false')
+chrome_options.add_argument('--headless')
 driver = webdriver.Chrome(options=chrome_options)
 
 driver.get(url)
@@ -49,14 +51,12 @@ try:
     # print('date_on_saturday', date_on_saturday)
 
     calendar_selector = "//div[@role='grid'][@class='mbsc-calendar-table mbsc-calendar-table-active']"
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, calendar_selector)))
+    WebDriverWait(driver, 12).until(EC.presence_of_element_located((By.XPATH, calendar_selector)))
 
     if current_date.month != date_on_saturday.month:
         nextMonthButton = driver.find_element(By.XPATH, "//button[@class='mbsc-calendar-button mbsc-calendar-button-next mbsc-reset mbsc-font mbsc-button mbsc-ios mbsc-ltr mbsc-button-flat mbsc-icon-button']")
         nextMonthButton.click()
-
         time.sleep(5)
-
 
     calendar_element = driver.find_element(By.XPATH, calendar_selector)
     rows = calendar_element.find_elements(By.XPATH, ".//div[@role='row'][@class='mbsc-calendar-row']")
@@ -65,6 +65,7 @@ try:
     for day in days:
         if day.text == str(date_on_saturday.day):
             day.click()
+            time.sleep(5)
             break
 
     free_parking_on_saturday = False
@@ -91,6 +92,11 @@ try:
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
                 time.sleep(2)
                 option.click()
+                park_for_free_selector = "//div[@class='ui basic center aligned segment']"
+                WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, park_for_free_selector)))
+                driver.find_element(By.XPATH, park_for_free_selector).click()
+                driver.find_element(By.XPATH, '//button[@class="ui button fluid PurchaseConfirm--button"]').click()
+                time.sleep(10)
                 break
 
     if(free_parking_on_saturday == True):
@@ -99,7 +105,7 @@ try:
         print("Saturday - ", date_on_saturday, ": No Free Parking Available")
 
     driver.get('https://reservenski.parkpalisadestahoe-village.com/select-parking')
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, calendar_selector)))
+    WebDriverWait(driver, 12).until(EC.presence_of_element_located((By.XPATH, calendar_selector)))
 
     if current_date.month != date_on_sunday.month:
         nextMonthButton = driver.find_element(By.XPATH, "//button[@class='mbsc-calendar-button mbsc-calendar-button-next mbsc-reset mbsc-font mbsc-button mbsc-ios mbsc-ltr mbsc-button-flat mbsc-icon-button']")
@@ -114,6 +120,7 @@ try:
     for day in days:
         if day.text == str(date_on_sunday.day):
             day.click()
+            time.sleep(5)
             break
 
     reservations_present = False
@@ -135,9 +142,17 @@ try:
         for option in parking_options:
             if option.text == 'Free Reservations':
                 free_parking_on_sunday = True
-                driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+                driver.execute_script("window.scrollTo(0, 1500)")
+                # driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
                 time.sleep(2)
                 option.click()
+                park_for_free_selector = "//div[@class='ui basic center aligned segment']"
+                WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, park_for_free_selector)))
+                driver.find_element(By.XPATH, park_for_free_selector).click()
+                confirm_button_selector = '//button[@class="ui button fluid PurchaseConfirm--button"]'
+                WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, confirm_button_selector)))
+                driver.find_element(By.XPATH, confirm_button_selector).click()
+                time.sleep(5)
                 break
 
     if(free_parking_on_sunday == True):
@@ -145,6 +160,7 @@ try:
     else:
         print("Sunday   - ", date_on_sunday, ": No Free Parking Available")
 
-
+except Exception as e:
+    raise e
 finally:
     driver.quit()
