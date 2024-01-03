@@ -5,28 +5,15 @@ from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime, timedelta
 import time
 
-current_time = datetime.now()
-days_until_tuesday = (1 - current_time.weekday() + 7) % 7
-next_tuesday = current_time + timedelta(days=days_until_tuesday)
-target_time = next_tuesday.replace(hour=12, minute=0, second=0, microsecond=0)
-time_difference = target_time - current_time
-wait_time_seconds = time_difference.total_seconds()
-# if wait_time_seconds < 0:
-    # wait_time_seconds += 7 * 86400  # 7 days * 86400 seconds in a day
-    # next_tuesday = next_tuesday + timedelta(seconds=wait_time_seconds)
-if wait_time_seconds > 0:
-    print(f"Waiting until", target_time.strftime('%H:%M %p'),'of', next_tuesday.strftime('%A, %Y-%m-%d'))
-    time.sleep(wait_time_seconds)
-    print("Done waiting")
-
 url = 'https://reservenski.parkpalisadestahoe-village.com/'
 webdriver_path = '/Applications/Chromium.app/Contents/MacOS/Chromium'
-username = 'katz.tavi123@gmail.com'
-password = 'PalisadesParking'
+username = 'abc'
+password = '123'
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--blink-settings=imagesEnabled=false')
 chrome_options.add_argument('--headless')
+
 driver = webdriver.Chrome(options=chrome_options)
 
 driver.get(url)
@@ -107,6 +94,7 @@ try:
                 park_for_free_selector = "//div[@class='ui basic center aligned segment']"
                 WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, park_for_free_selector)))
                 driver.find_element(By.XPATH, park_for_free_selector).click()
+                time.sleep(2)
                 driver.find_element(By.XPATH, '//button[@class="ui button fluid PurchaseConfirm--button"]').click()
                 time.sleep(10)
                 break
@@ -161,8 +149,9 @@ try:
                 park_for_free_selector = "//div[@class='ui basic center aligned segment']"
                 WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, park_for_free_selector)))
                 driver.find_element(By.XPATH, park_for_free_selector).click()
+                time.sleep(2)
                 confirm_button_selector = '//button[@class="ui button fluid PurchaseConfirm--button"]'
-                WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, confirm_button_selector)))
+                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, confirm_button_selector)))
                 driver.find_element(By.XPATH, confirm_button_selector).click()
                 time.sleep(10)
                 break
