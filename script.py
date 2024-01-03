@@ -12,7 +12,7 @@ password = '123'
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--blink-settings=imagesEnabled=false')
-chrome_options.add_argument('--headless')
+# chrome_options.add_argument('--headless')
 
 driver = webdriver.Chrome(options=chrome_options)
 
@@ -33,11 +33,8 @@ try:
     login_button = driver.find_element(By.XPATH, '//button[text()="Login"]')
     login_button.click()
 
-    select_parking_selector = "//a[@href='/parking-codes']"
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, select_parking_selector)))
-    select_parking_link = driver.find_element(By.XPATH, select_parking_selector)
-
-    select_parking_link.click()
+    time.sleep(5)
+    driver.get('https://reservenski.parkpalisadestahoe-village.com/select-parking')
 
     current_date = datetime.now()
 
@@ -95,7 +92,10 @@ try:
                 WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, park_for_free_selector)))
                 driver.find_element(By.XPATH, park_for_free_selector).click()
                 time.sleep(2)
-                driver.find_element(By.XPATH, '//button[@class="ui button fluid PurchaseConfirm--button"]').click()
+                confirm_button_selector = '//button[@class="ui button fluid PurchaseConfirm--button"]'
+                WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, confirm_button_selector)))
+                confirm_button = driver.find_element(By.XPATH, confirm_button_selector)
+                confirm_button.click()
                 time.sleep(10)
                 break
 
@@ -152,7 +152,8 @@ try:
                 time.sleep(2)
                 confirm_button_selector = '//button[@class="ui button fluid PurchaseConfirm--button"]'
                 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, confirm_button_selector)))
-                driver.find_element(By.XPATH, confirm_button_selector).click()
+                confirm_button = driver.find_element(By.XPATH, confirm_button_selector)
+                confirm_button.click()
                 time.sleep(10)
                 break
 
