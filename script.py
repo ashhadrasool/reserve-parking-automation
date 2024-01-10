@@ -83,7 +83,7 @@ try:
         parking_options = parking_option_div_element.find_elements(By.XPATH, parking_options_selector)
 
         for option in parking_options:
-            if option.text == 'Free Reservations':
+            if option.text.startswith('Free Reservation'):
                 free_parking_on_saturday = True
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
                 time.sleep(2)
@@ -140,7 +140,7 @@ try:
         parking_options = parking_option_div_element.find_elements(By.XPATH, parking_options_selector)
 
         for option in parking_options:
-            if option.text == 'Free Reservations':
+            if option.text.startswith('Free Reservation'):
                 free_parking_on_sunday = True
                 driver.execute_script("window.scrollTo(0, 1500)")
                 # driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
